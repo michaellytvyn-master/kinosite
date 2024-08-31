@@ -1,0 +1,145 @@
+<div class="hero mv-single-hero" style="background: #fff0 url('https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{backdropPath}}') no-repeat; background-size: cover; background-position: center center;">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <h1> movie listing - list</h1>
+				<ul class="breadcumb">
+					<li class="active"><a href="#">Home</a></li>
+					<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
+				</ul> -->
+			</div>
+		</div>
+	</div>
+</div>
+
+    <div class="page-single movie-single movie_single">
+	<div class="container">
+		<div class="row ipad-width2">
+			<div class="col-md-4 col-sm-12 col-xs-12">
+				<div class="movie-img sticky-sb">
+					{{!-- https://image.tmdb.org/t/p/w600_and_h900_bestv2 --}}
+					<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{posterPath}}" alt="{{movieTitle}}">
+					{{!-- <div class="movie-btn">	
+						<div class="btn-transform transform-vertical red">
+							<div><a href="#" class="item item-1 redbtn"> <i class="ion-play"></i> Watch Trailer</a></div>
+							<div><a href="https://www.youtube.com/embed/o-0hcF97wy0" class="item item-2 redbtn fancybox-media hvr-grow"><i class="ion-play"></i></a></div>
+						</div>
+						<div class="btn-transform transform-vertical">
+							<div><a href="#" class="item item-1 yellowbtn"> <i class="ion-card"></i> Buy ticket</a></div>
+							<div><a href="#" class="item item-2 yellowbtn"><i class="ion-card"></i></a></div>
+						</div>
+					</div> --}}
+				</div>
+			</div>
+			<div class="col-md-8 col-sm-12 col-xs-12">
+				<div class="movie-single-ct main-content">
+					<h1 class="bd-hd">{{movieTitle}} <span>{{releaseDate}}</span></h1>
+					
+					<div class="movie-rate">
+						<div class="rate">
+							<i class="ion-android-star"></i>
+							<p><span>{{voteAverage}}</span> /{{voteCount}}<br>
+								{{!-- <span class="rv">56 Reviews</span> --}}
+							</p>
+						</div>
+						<div class="rate-star">
+							<p>Rate This Movie: {{stars}} {{noStars}}</p>
+									{{#each starsIcons}}
+													<i class="ion-ios-star"></i>
+									{{/each}}
+									{{#each starsNoIcons}}
+													<i class="ion-ios-star-outline"></i>
+									{{/each}}
+						</div>
+
+                      
+					</div>
+         
+					<div class="movie-tabs">
+                        <div class="row">
+						            	<div class="col-md-8 col-sm-12 col-xs-12">
+						            		<p>{{movieOverview}}</p>
+						             
+											 
+								         <div class="kinobox_player"></div>
+						            	</div>
+						            	<div class="col-md-4 col-xs-12 col-sm-12">
+						            		<div class="sb-it">
+						            			<h6>Director: </h6>
+						            			<p><a href="#">Mark Cendrowski</a></p>
+						            		</div>
+                                            <div class="ads">
+												<img src="/images/uploads/ads1.png" alt="">
+											</div>
+                                            <div class="ads">
+												<img src="/images/uploads/ads1.png" alt="">
+											</div>
+                                            
+						            	</div>
+						            </div>
+                        <!-- Форма для поиска -->
+    {{!-- <div class="search-container">
+        <input type="text" id="searchQuery" placeholder="Введите название фильма...">
+        <button onclick="searchMovie()">Найти фильм</button>
+    </div> --}}
+						    <!-- Контейнер для плеера -->
+                    
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Подключение скрипта Kinobox -->
+    <script src="https://kinobox.tv/kinobox.min.js"></script>
+
+    <!-- Скрипт для обработки поиска -->
+    <script>
+        function searchMovie() {
+            // Получаем введенное пользователем название фильма
+            //const query = document.getElementById('searchQuery').value;
+            const query = '{{playerId}}'
+
+            // Если поле пустое, ничего не делаем
+            if (!query) {
+                alert('Введите название фильма!');
+                return;
+            }
+
+            // Очищаем контейнер плеера перед новым поиском
+            document.querySelector('.kinobox_player').innerHTML = '';
+
+            // Инициализируем плеер с новым поисковым запросом
+            kbox('.kinobox_player', {
+                search: {
+                     // Используем введенное название для поиска  tmdb: query, kinopoisk: query, title: query
+																				tmdb: query
+                },
+                
+                menu: {
+                    enable: true,
+                    default: 'menu_list',
+                    mobile: 'menu_button',
+                    format: '{N} :: {T} ({Q})',
+                    limit: 5,
+                    open: false
+                },
+                notFoundMessage: 'Видео не найдено.',
+                players: {
+                    alloha: { enable: true, position: 1 },
+                    kodik: { enable: true, position: 2 },
+                    videocdn: { enable: true, position: 3 },
+                    cdnmovies: { enable: true, position: 4 },
+                    ashdi:  { enable: true, position: 5 },
+                    collaps:  { enable: true, position: 6 },
+                    hdvb:  { enable: true, position: 7 },
+                    vibix:  { enable: true, position: 8 },
+                    voidboost:  { enable: true, position: 9 }
+                }
+            });
+        }
+
+        searchMovie()
+    </script>

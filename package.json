@@ -1,0 +1,21 @@
+{
+  "name": "kinosite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.5",
+    "express": "^4.19.2",
+    "express-handlebars": "^8.0.1",
+    "hbs": "^4.2.0",
+    "mysql2": "^3.11.0",
+    "nodemon": "^3.1.4"
+  }
+}
