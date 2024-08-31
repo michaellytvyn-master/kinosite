@@ -1,24 +1,9 @@
-	<div class="slider movie-items">
+
+
+<div class="slider movie-items search-template">
 		<div class="container">
 			<div class="row">
-				<div class="slick-multiItemSlider">
-				 	{{#each popular}}
-					<div class="movie-item">
-						<a href="/movie/{{this.url}}">
-						<div class="mv-img">
-							<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}" width="285" height="437">
-						</div>
-						<div class="title-in">
-							{{!-- <div class="cate">
-								<span class="green"><a href="#">comedy</a></span>
-							</div> --}}
-							<h6>{{this.title}}</h6>
-							<p><i class="ion-android-star"></i><span> {{this.vote_average}} </span> /10</p>
-						</div>
-						</a>
-					</div>
-        {{/each}}
-				</div>
+						<h1>Поиск</h1>
 			</div>
 		</div>
 	</div>
@@ -28,22 +13,22 @@
 	<div class="container">
 		<div class="row ipad-width">
 			<div class="col-md-8 col-sm-12 col-xs-12">
-				<div class="topbar-filter">
-					<p>Найдено <span>{{totalMovies}} фильмов</span></p>
-							<div class='sort-by'>
-
-									<label>Сортировать по:</label>
-														<select>
-																<option value="rating">Рейтинг По убыванию</option>
-																<option value="rating">Рейтинг По возрастанию</option>
-																<option value="date">Дата выпуска По убыванию</option>
-																<option value="date">Дата выпуска По возрастанию</option>
-															</select>
-							</div>
-				</div>
 				<div class="flex-wrap-movielist">
-        {{#each movies}}
-            <div class="movie-item-style-2 movie-item-style-1">
+								    {{#if error}}
+            <p>{{error}}</p>
+        {{/if}}
+
+        {{#if message}}
+            <p>{{message}}</p>
+        {{/if}}
+
+
+
+
+
+{{#if movies.length}}
+                {{#each movies}}
+																				  <div class="movie-item-style-2 movie-item-style-1">
 	            			<a href="/movie/{{this.url}}">
 																	<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}">
 	            			<div class="mv-item-infor">
@@ -52,30 +37,32 @@
 	            			</div>
 																</a>
 	            		</div>
-	            						
-        {{/each}}		
+                {{/each}}
+											{{else}}
+														<div class='no-results'>
+																<h2>ПОИСК не дал результатов...</h2>
+																		<p>попробуйте другой запрос</p>
+																<div class="search-page">
+																			<form action="/api/search" method="get">
+																								<input 
+																												type="text" 
+																												name="query" 
+																												placeholder="Поиск кино, сериалов, шоу"
+																												required
+																								>
+																								<button type="submit">ПОИСК</button>
+																				</form>
+																</div>
+														</div>
+											{{/if}}
 				</div>		
-				<div class="topbar-filter">
-					
-					<div class="pagination2">
-						<span>Page 1 of 2:</span>
-						 {{#gt page 1}}
-            <a href="?page={{subtract page 1}}"><i class="ion-arrow-left-b"> </i>Previous</a>
-        {{/gt}}
-						 {{#range 1 totalPages}}
-                <a class="{{#ifEquals this ../page}}active{{/ifEquals}}" href="?page={{this}}">{{this}}</a>
-        {{/range}}
-						 {{#lt page totalPages}}
-            <a href="?page={{add page 1}}">Next <i class="ion-arrow-right-b"></i></a>
-        {{/lt}}
-					</div>
-				</div>
+
 			</div>
 			<div class="col-md-4 col-sm-12 col-xs-12">
 				<div class="sidebar">
 					<div class="searh-form">
-						<h4 class="sb-title">Категории</h4>
-						{{!-- <form class="form-style-1" action="#">
+						<h4 class="sb-title">Search for movie</h4>
+						<form class="form-style-1" action="#">
 							<div class="row">
 								<div class="col-md-12 form-it">
 									<label>Movie name</label>
@@ -123,7 +110,7 @@
 									<input class="submit" type="submit" value="submit">
 								</div>
 							</div>
-						</form> --}}
+						</form>
 					</div>
 					<div class="ads">
 						<img src="images/uploads/ads1.png" alt="">

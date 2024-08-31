@@ -44,7 +44,7 @@
 							</p>
 						</div>
 						<div class="rate-star">
-							<p>Rate This Movie: {{stars}} {{noStars}}</p>
+							<p>Рейтинг: {{stars}} {{noStars}}</p>
 									{{#each starsIcons}}
 													<i class="ion-ios-star"></i>
 									{{/each}}
@@ -100,10 +100,11 @@
         function searchMovie() {
             // Получаем введенное пользователем название фильма
             //const query = document.getElementById('searchQuery').value;
-            const query = '{{playerId}}'
+            const queryTitle = '{{original_title}}'
+												const queryTmdb = '{{playerId}}'
 
             // Если поле пустое, ничего не делаем
-            if (!query) {
+            if (!queryTitle || !queryTmdb) {
                 alert('Введите название фильма!');
                 return;
             }
@@ -114,8 +115,9 @@
             // Инициализируем плеер с новым поисковым запросом
             kbox('.kinobox_player', {
                 search: {
-                     // Используем введенное название для поиска  tmdb: query, kinopoisk: query, title: query
-																				tmdb: query
+                     // Используем введенное название для поиска  tmdb: query, kinopoisk: query,
+																					tmdb: queryTmdb,
+																				title: queryTitle
                 },
                 
                 menu: {

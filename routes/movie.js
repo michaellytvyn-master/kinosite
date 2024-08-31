@@ -38,6 +38,7 @@ router.get('/:slug', (req, res) => {
 			release_date: releaseDateRaw,
 			vote_average: voteAverage,
 			vote_count: voteCount,
+			original_title
 		} = results[0]
 
 		// Format the release date to 'YYYY-MM-DD'
@@ -53,7 +54,7 @@ router.get('/:slug', (req, res) => {
 
 		// Render the 'movie' template and pass the data to it
 		res.render('movie', {
-			title: 'Kinobox Player',
+			title: movieTitle,
 			playerId,
 			movieTitle,
 			movieOverview,
@@ -63,7 +64,8 @@ router.get('/:slug', (req, res) => {
 			voteAverage,
 			voteCount,
 			starsIcons,
-			starsNoIcons
+			starsNoIcons,
+			original_title
 		})
 	})
 })

@@ -1,7 +1,8 @@
 const express = require('express')
 const axios = require('axios')
 const router = express.Router()
-
+const GenreClass = require('../model/genreSchema')
+const connection = require('../db')
 // http://localhost:3000/api/get-genres?genre_ids=28,12,35
 // Your TMDB API Key
 const TMDB_API_KEY = 'de94532d35add78bb95c7004ef2a92a4'
@@ -76,7 +77,7 @@ async function getGenres() {
 }
 
 // Route to get genres
-router.get('/all', async (req, res) => {
+router.get('/all-tmdb', async (req, res) => {
 	try {
 		const genres = await getGenres()
 		if (genres.length === 0) {
@@ -87,5 +88,58 @@ router.get('/all', async (req, res) => {
 		res.status(500).json({ error: 'An error occurred while fetching genres' })
 	}
 })
+
+// Route to get all genres
+router.get('/all', (req, res) => {
+	const getAllGenresQuery = `
+					SELECT * FROM genre;
+	`
+
+	connection.query(getAllGenresQuery, (err, results) => {
+		if (err) {
+			console.error('Error fetching genres:', err.message)
+			return res.status(500).json({ error: 'Failed to fetch genres' })
+		}
+
+		// If no genres are found, send an empty array
+		if (results.length === 0) {
+			return res.json([])
+		}
+
+		// Send the genres in the response
+		res.json(results)
+	})
+})
+
+// Route to get and save genres
+router.get('/all-save', async (req, res) => {
+	try {
+		const genres = await getGenres()
+		if (genres.length === 0) {
+			return res.status(500).json({ error: 'Failed to fetch genres' })
+		}
+
+		// Iterate over each genre and save it to the database
+		genres.forEach((genreData) => {
+			const genre = new GenreClass({
+				genreId: genreData.id,
+				name: genreData.name,
+			})
+
+			// Save the genre to the database
+			genre.saveToDatabase((err) => {
+				if (err) {
+					console.error('Error saving genre:', genreData.name)
+				}
+			})
+		})
+
+		res.json({ message: 'Genres saved successfully', genres })
+
+	} catch (error) {
+		res.status(500).json({ error: 'An error occurred while fetching and saving genres' })
+	}
+})
+
 
 module.exports = router

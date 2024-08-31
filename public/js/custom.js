@@ -184,7 +184,7 @@ $(function () {
 		arrows: false,
 		draggable: true,
 		autoplay: true,
-		autoplaySpeed: 2000,
+		autoplaySpeed: 4000,
 		dots: true,
 		responsive: [
 			{

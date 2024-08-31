@@ -11,13 +11,12 @@
 
 <head>
 	<!-- Basic need -->
-	<title>Open Pediatrics</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="">
 	<meta name="keywords" content="">
 	<meta name="author" content="">
 	<link rel="profile" href="#">
-
+<title>{{title}} | KINO-VOIN</title>
 	<!--Google Font-->
 	<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
 	<!-- Mobile specific meta -->
@@ -89,16 +88,26 @@
 
 				</div>
 				<!-- /.navbar-collapse -->
+
+							<!-- top search form -->
+			<!-- views/partials/searchForm.hbs -->
+			<div class="top-search">
+						<form action="/api/search" method="get">
+											<input 
+															type="text" 
+															name="query" 
+															placeholder="Поиск кино, сериалов, шоу"
+															required
+											>
+											<button type="submit">Search</button>
+							</form>
+			</div>
+
+
 			</nav>
 
-			<!-- top search form -->
-			<div class="top-search">
-				<select>
-					<option value="united">TV show</option>
-					<option value="saab">Others</option>
-				</select>
-				<input type="text" placeholder="Search for a movie, TV Show or celebrity that you are looking for">
-			</div>
+			
+
 		</div>
 	</header>
 	<!-- END | Header -->
@@ -108,13 +117,20 @@
 		<div class="container">
 			<div class="flex-parent-ft">
 				<div class="flex-child-ft item1">
-					<a href="index-2.html"><img class="logo" src="images/logo1.png" alt=""></a>
+					{{!-- <a href="/">
+					<img class="logo" src="" alt="">
+					</a> --}}
+					<a href="/" class="logo_link">
+          <div class="logo_box">
+            KINO-VOIN
+          </div>
+          </a>
 					<p>5th Avenue st, manhattan<br>
 						New York, NY 10001</p>
 					<p>Call us: <a href="#">(+01) 202 342 6789</a></p>
 				</div>
 				<div class="flex-child-ft item2">
-					<h4>Resources</h4>
+					<h4>Категории</h4>
 					<ul>
 						<li><a href="#">About</a></li>
 						<li><a href="#">Blockbuster</a></li>
@@ -125,36 +141,38 @@
 					</ul>
 				</div>
 				<div class="flex-child-ft item3">
-					<h4>Legal</h4>
+					<h4>Юридическая информация</h4>
 					<ul>
-						<li><a href="#">Terms of Use</a></li>
-						<li><a href="#">Privacy Policy</a></li>
-						<li><a href="#">Security</a></li>
+
+						<li><a href="#">Условия использования</a></li>
+						<li><a href="#">Политика конфиденциальности</a></li>
 					</ul>
 				</div>
 				<div class="flex-child-ft item4">
-					<h4>Account</h4>
-					<ul>
-						<li><a href="#">My Account</a></li>
-						<li><a href="#">Watchlist</a></li>
-						<li><a href="#">Collections</a></li>
-						<li><a href="#">User Guide</a></li>
-					</ul>
+					<h4>ПОИСК</h4>
+					<div class="search-page">
+																			<form action="/api/search" method="get">
+																								<input 
+																												type="text" 
+																												name="query" 
+																												placeholder="Поиск кино"
+																												required
+																								>
+																								<button type="submit">ПОИСК</button>
+																				</form>
+																</div>
 				</div>
-				<div class="flex-child-ft item5">
+				{{!-- <div class="flex-child-ft item5">
 					<h4>Newsletter</h4>
 					<p>Subscribe to our newsletter system now <br> to get latest news from us.</p>
 					<form action="#">
 						<input type="text" placeholder="Enter your email...">
 					</form>
 					<a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
-				</div>
+				</div> --}}
 			</div>
 		</div>
 		<div class="ft-copyright">
-			<div class="ft-left">
-				<p><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></p>
-			</div>
 			<div class="backtotop">
 				<p><a href="#" id="back-to-top">Back to top <i class="ion-ios-arrow-thin-up"></i></a></p>
 			</div>
@@ -162,10 +180,10 @@
 	</footer>
 	<!-- end of footer section-->
 
-	<script src="js/jquery.js"></script>
-	<script src="js/plugins.js"></script>
-	<script src="js/plugins2.js"></script>
-	<script src="js/custom.js"></script>
+	<script src="/js/jquery.js"></script>
+	<script src="/js/plugins.js"></script>
+	<script src="/js/plugins2.js"></script>
+	<script src="/js/custom.js"></script>
 </body>
 
 
