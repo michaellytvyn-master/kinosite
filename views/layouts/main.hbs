@@ -12,11 +12,13 @@
 <head>
 	<!-- Basic need -->
 	<meta charset="UTF-8">
-	<meta name="description" content="">
-	<meta name="keywords" content="">
+	<meta name="description" content="{{description}}">
+	<meta name="keywords" content="{{keywords}}">
 	<meta name="author" content="">
 	<link rel="profile" href="#">
 <title>{{title}} | KINO-VOIN</title>
+
+
 	<!--Google Font-->
 	<link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
 	<!-- Mobile specific meta -->
@@ -60,10 +62,11 @@
 						</li>
 						<li>
 							<a href='/' class="btn btn-default">
-								Home
+								Главная
 							</a>
 						</li>
-						<li class="dropdown first">
+
+						{{!-- <li class="dropdown first">
 							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
 								movies<i class="fa fa-angle-down" aria-hidden="true"></i>
 							</a>
@@ -80,10 +83,104 @@
 								<li><a href="moviesingle.html">Movie single</a></li>
 								<li class="it-last"><a href="seriessingle.html">Series single</a></li>
 							</ul>
-						</li>
-
-
-
+						</li> --}}
+					</ul>
+							<ul class="nav navbar-nav flex-child-menu menu-left desktop-hidden">
+							<li>
+														<a href="/?genreId=28#page-single" class="">
+																	боевик
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=12#page-single" class="">
+																	приключения
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=16#page-single" class="active">
+																	мультфильм
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=35#page-single" class="">
+																	комедия
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=80#page-single" class="">
+																	криминал
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=99#page-single" class="">
+																	документальный
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=18#page-single" class="">
+																	драма
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=10751#page-single" class="">
+																	семейный
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=14#page-single" class="">
+																	фэнтези
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=36#page-single" class="">
+																	история
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=27#page-single" class="">
+																	ужасы
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=10402#page-single" class="">
+																	музыка
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=9648#page-single" class="">
+																	детектив
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=10749#page-single" class="">
+																	мелодрама
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=878#page-single" class="">
+																	фантастика
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=10770#page-single" class="">
+																	телевизионный фильм
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=53#page-single" class="">
+																	триллер
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=10752#page-single" class="">
+																	военный
+														</a>
+												</li>
+												<li>
+														<a href="/?genreId=37#page-single" class="">
+																	вестерн
+														</a>
+												</li>
 					</ul>
 
 				</div>
@@ -125,11 +222,11 @@
             KINO-VOIN
           </div>
           </a>
-					<p>5th Avenue st, manhattan<br>
-						New York, NY 10001</p>
+					{{!-- <p>5th Avenue st, manhattan<br>
+						New York, NY 10001</p> --}}
 					<p>Call us: <a href="#">(+01) 202 342 6789</a></p>
 				</div>
-				<div class="flex-child-ft item2">
+				{{!-- <div class="flex-child-ft item2">
 					<h4>Категории</h4>
 					<ul>
 						<li><a href="#">About</a></li>
@@ -139,13 +236,13 @@
 						<li><a href="#">Blog</a></li>
 						<li><a href="#">Help Center</a></li>
 					</ul>
-				</div>
+				</div> --}}
 				<div class="flex-child-ft item3">
 					<h4>Юридическая информация</h4>
 					<ul>
 
-						<li><a href="#">Условия использования</a></li>
-						<li><a href="#">Политика конфиденциальности</a></li>
+						<li><a href="/politika-ispolzovaniya">Политика использования</a></li>
+						<li><a href="/privacy-policy">Политика конфиденциальности</a></li>
 					</ul>
 				</div>
 				<div class="flex-child-ft item4">

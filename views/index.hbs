@@ -1,6 +1,7 @@
 	<div class="slider movie-items">
 		<div class="container">
 			<div class="row">
+				<h1 class="home-h1">Популярные</h1>
 				<div class="slick-multiItemSlider">
 				 	{{#each popular}}
 					<div class="movie-item">
@@ -24,7 +25,7 @@
 	</div>
 
 
-	<div class="page-single">
+	<div id="page-single" class="page-single">
 	<div class="container">
 		<div class="row ipad-width">
 			<div class="col-md-8 col-sm-12 col-xs-12">
@@ -32,7 +33,7 @@
 					<p>Найдено <span>{{totalMovies}} фильмов</span></p>
 							<div class='sort-by'>
 
-									<label>Сортировать по:</label>
+									<label>Сортировать:</label>
 														<select>
 																<option value="rating">Рейтинг По убыванию</option>
 																<option value="rating">Рейтинг По возрастанию</option>
@@ -57,24 +58,54 @@
 				</div>		
 				<div class="topbar-filter">
 					
-					<div class="pagination2">
-						<span>Page 1 of 2:</span>
-						 {{#gt page 1}}
-            <a href="?page={{subtract page 1}}"><i class="ion-arrow-left-b"> </i>Previous</a>
-        {{/gt}}
-						 {{#range 1 totalPages}}
-                <a class="{{#ifEquals this ../page}}active{{/ifEquals}}" href="?page={{this}}">{{this}}</a>
-        {{/range}}
-						 {{#lt page totalPages}}
-            <a href="?page={{add page 1}}">Next <i class="ion-arrow-right-b"></i></a>
-        {{/lt}}
-					</div>
+				<div class="pagination2">
+    <span>Страница {{page}} из {{totalPages}}:</span>
+    
+    {{#gt page 1}}
+        <a href="?page={{subtract page 1}}&limit={{limit}}{{#if selectedGenreId}}&genreId={{selectedGenreId}}{{/if}}#page-single">
+            <i class="ion-arrow-left-b"></i> Назад 
+        </a>
+    {{/gt}}
+    
+    {{#range 1 totalPages}}
+        <a class="{{#ifEquals this ../page}}active{{/ifEquals}}" href="?page={{this}}&limit={{../limit}}{{#if ../selectedGenreId}}&genreId={{../selectedGenreId}}{{/if}}#page-single">
+            {{this}}
+        </a>
+    {{/range}}
+    
+    {{#lt page totalPages}}
+        <a href="?page={{add page 1}}&limit={{limit}}{{#if selectedGenreId}}&genreId={{selectedGenreId}}{{/if}}#page-single">
+            Вперед <i class="ion-arrow-right-b"></i>
+        </a>
+    {{/lt}}
+</div>
+
+
+					
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-12 col-xs-12">
 				<div class="sidebar">
 					<div class="searh-form">
 						<h4 class="sb-title">Категории</h4>
+
+							<ul class="genre-filter">
+										{{#each genres}}
+												<li>
+														<a href="/?genreId={{this.genreId}}#page-single" 
+																	class="{{#ifEquals this.genreId ../selectedGenreId}}active{{/ifEquals}}">
+																	{{this.name}}
+														</a>
+												</li>
+										{{/each}}
+										<li>
+												<a href="/#page-single" class="{{#unless selectedGenreId}}active{{/unless}}">
+														Все Категории
+												</a>
+										</li>
+								</ul>
+
+
 						{{!-- <form class="form-style-1" action="#">
 							<div class="row">
 								<div class="col-md-12 form-it">

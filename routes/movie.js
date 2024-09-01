@@ -54,7 +54,9 @@ router.get('/:slug', (req, res) => {
 
 		// Render the 'movie' template and pass the data to it
 		res.render('movie', {
-			title: movieTitle,
+			title: `${movieTitle} - Смотреть онлайн`,
+			description: movieOverview,
+			keywords: `Смотреть ${movieTitle} онлайн, ${movieTitle} cмотреть онлайн, ${movieTitle} бесплатно, ${movieTitle} полный фильм, ${movieTitle} в хорошем качестве`,
 			playerId,
 			movieTitle,
 			movieOverview,
