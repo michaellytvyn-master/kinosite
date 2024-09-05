@@ -12,9 +12,10 @@ router.get('/', (req, res) => {
 
 	// Query to search by title or original_title
 	const searchSql = `
-					SELECT * FROM movie
-					WHERE title LIKE ? OR original_title LIKE ?;
-	`
+    SELECT * FROM movie
+    WHERE title LIKE ? OR original_title LIKE ?
+    LIMIT 20;
+`
 
 	// Use wildcards to match partial strings
 	const searchValue = `%${searchQuery}%`

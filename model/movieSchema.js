@@ -29,7 +29,7 @@ class MovieClass {
 		this.video = video
 		this.voteAverage = vote_average
 		this.voteCount = vote_count
-		this.url = MovieClass.generateSlug(original_title) // Generate URL slug from title
+		this.url = `${MovieClass.generateSlug(original_title)}${playerId}` // Generate URL slug from title
 	}
 
 	static generateSlug(title) {

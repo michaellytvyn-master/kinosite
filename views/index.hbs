@@ -7,7 +7,7 @@
 					<div class="movie-item">
 						<a href="/movie/{{this.url}}">
 						<div class="mv-img">
-							<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}" width="285" height="437">
+							<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}" width="285" height="437" class="lazyload">
 						</div>
 						<div class="title-in">
 							{{!-- <div class="cate">
@@ -31,7 +31,7 @@
 			<div class="col-md-8 col-sm-12 col-xs-12">
 				<div class="topbar-filter">
 					<p>Найдено <span>{{totalMovies}} фильмов</span></p>
-							<div class='sort-by'>
+							{{!-- <div class='sort-by'>
 
 									<label>Сортировать:</label>
 														<select>
@@ -40,13 +40,13 @@
 																<option value="date">Дата выпуска По убыванию</option>
 																<option value="date">Дата выпуска По возрастанию</option>
 															</select>
-							</div>
+							</div> --}}
 				</div>
 				<div class="flex-wrap-movielist">
         {{#each movies}}
             <div class="movie-item-style-2 movie-item-style-1">
 	            			<a href="/movie/{{this.url}}">
-																	<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}">
+																	<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}" class="lazyload">
 	            			<div class="mv-item-infor">
 	            				<h6>{{this.title}}</h6>
 	            				<p class="rate"><i class="ion-android-star"></i><span>{{this.vote_average}}</span> /10</p>
@@ -60,24 +60,26 @@
 					
 				<div class="pagination2">
     <span>Страница {{page}} из {{totalPages}}:</span>
-    
     {{#gt page 1}}
-        <a href="?page={{subtract page 1}}&limit={{limit}}{{#if selectedGenreId}}&genreId={{selectedGenreId}}{{/if}}#page-single">
-            <i class="ion-arrow-left-b"></i> Назад 
-        </a>
-    {{/gt}}
-    
-    {{#range 1 totalPages}}
-        <a class="{{#ifEquals this ../page}}active{{/ifEquals}}" href="?page={{this}}&limit={{../limit}}{{#if ../selectedGenreId}}&genreId={{../selectedGenreId}}{{/if}}#page-single">
-            {{this}}
-        </a>
-    {{/range}}
-    
-    {{#lt page totalPages}}
-        <a href="?page={{add page 1}}&limit={{limit}}{{#if selectedGenreId}}&genreId={{selectedGenreId}}{{/if}}#page-single">
-            Вперед <i class="ion-arrow-right-b"></i>
-        </a>
-    {{/lt}}
+    <a href="?page={{subtract page 1}}&limit={{limit}}{{#if selectedGenreId}}&genreId={{selectedGenreId}}{{/if}}#page-single">
+        <i class="ion-arrow-left-b"></i> Назад 
+    </a>
+{{/gt}}
+
+{{!-- Determine the start and end page for pagination --}}
+{{!-- Start page: current page minus 4, but not less than 1 --}}
+{{#range (max 1 (subtract page 3)) (min totalPages (add (max 1 (subtract page 3)) 6))}}
+    <a class="{{#ifEquals this ../page}}active{{/ifEquals}}" href="?page={{this}}&limit={{../limit}}{{#if ../selectedGenreId}}&genreId={{../selectedGenreId}}{{/if}}#page-single">
+        {{this}}
+    </a>
+{{/range}}
+
+{{#lt page totalPages}}
+    <a href="?page={{add page 1}}&limit={{limit}}{{#if selectedGenreId}}&genreId={{selectedGenreId}}{{/if}}#page-single">
+        Вперед <i class="ion-arrow-right-b"></i>
+    </a>
+{{/lt}}
+
 </div>
 
 
@@ -157,7 +159,7 @@
 						</form> --}}
 					</div>
 					<div class="ads">
-						<img src="images/uploads/ads1.png" alt="">
+						<img src="images/uploads/ads1.png" alt="" class="lazyload">
 					</div>
 					<div class="sb-facebook sb-it">
 						<h4 class="sb-title">Find us on Facebook</h4>

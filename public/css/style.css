@@ -5963,7 +5963,7 @@ ul {
 }
 .movie-single .movie-img,
 .movie-single .mv-ceb {
-  margin-right: 30px;
+  /* margin-right: 30px; */
   margin-bottom: 60px;
 }
 @media (max-width: 767px) {
@@ -6060,6 +6060,7 @@ ul {
   .movie-single .movie-single-ct .movie-rate .rate-star {
     padding-left: 0;
     border: none;
+    margin-left: 0px;
   }
 }
 .movie-single .movie-single-ct .movie-rate .rate-star p {

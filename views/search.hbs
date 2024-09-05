@@ -30,7 +30,7 @@
                 {{#each movies}}
 																				  <div class="movie-item-style-2 movie-item-style-1">
 	            			<a href="/movie/{{this.url}}">
-																	<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}">
+																	<img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/{{this.poster_path}}" alt="{{this.title}}" class="lazyload">
 	            			<div class="mv-item-infor">
 	            				<h6>{{this.title}}</h6>
 	            				<p class="rate"><i class="ion-android-star"></i><span>{{this.vote_average}}</span> /10</p>
@@ -62,7 +62,7 @@
 				<div class="sidebar">
 					<div class="searh-form">
 						<h4 class="sb-title">Search for movie</h4>
-						<form class="form-style-1" action="#">
+						{{!-- <form class="form-style-1" action="#">
 							<div class="row">
 								<div class="col-md-12 form-it">
 									<label>Movie name</label>
@@ -110,19 +110,18 @@
 									<input class="submit" type="submit" value="submit">
 								</div>
 							</div>
-						</form>
+						</form> --}}
 					</div>
-					<div class="ads">
+					{{!-- <div class="ads">
 						<img src="images/uploads/ads1.png" alt="">
-					</div>
-					<div class="sb-facebook sb-it">
+					</div> --}}
+					{{!-- <div class="sb-facebook sb-it">
 						<h4 class="sb-title">Find us on Facebook</h4>
- 
-					</div>
-					<div class="sb-twitter sb-it">
-						<h4 class="sb-title">Tweet to us</h4>
-					 			
-					</div>
+					</div> --}}
+					{{!-- <div class="sb-twitter sb-it">
+						<h4 class="sb-title">Tweet to us</h4>	
+					</div> --}}
+					{{!--  --}}
 				</div>
 			</div>
 		</div>

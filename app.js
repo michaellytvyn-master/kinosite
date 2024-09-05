@@ -39,6 +39,12 @@ const hbsHelpers = {
 	},
 	subtract: function (v1, v2) {
 		return v1 - v2 // Inline helper, no block required
+	},
+	max: function (v1, v2) {
+		return v1 > v2 ? v1 : v2
+	},
+	min: function (v1, v2) {
+		return v1 < v2 ? v1 : v2
 	}
 }
 
