@@ -2,10 +2,10 @@ const mysql = require('mysql2')
 
 // Create a connection to the database
 const connection = mysql.createConnection({
-	host: 'sql7.freemysqlhosting.net', // Replace with your MySQL host
-	user: 'sql7728729',      // Replace with your MySQL username
-	password: 'P7spyfVJy3', // Replace with your MySQL password
-	database: 'sql7728729', // Replace with your MySQL database name
+	host: 'localhost',
+	user: 'myappuser',
+	password: '00001111',
+	database: 'myappdb', // Replace with your MySQL database name
 	charset: 'utf8mb4'
 })
 

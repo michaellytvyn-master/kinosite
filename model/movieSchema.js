@@ -24,7 +24,7 @@ class MovieClass {
 		this.overview = overview
 		this.popularity = popularity
 		this.posterPath = poster_path
-		this.releaseDate = release_date
+		this.releaseDate = release_date || "2024-07-24"
 		this.title = title
 		this.video = video
 		this.voteAverage = vote_average
