@@ -22,7 +22,7 @@ const getMoviesFromDatabase = () => {
 router.get('/sitemap.xml', async (req, res) => {
 	try {
 		// Создаем поток Sitemap
-		const sitemapStream = new SitemapStream({ hostname: 'https://www.yoursite.com' })
+		const sitemapStream = new SitemapStream({ hostname: 'https://kino-magnit.ru' })
 
 		// Генерируем ссылки для Sitemap
 		const links = [

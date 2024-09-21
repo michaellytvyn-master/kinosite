@@ -31,6 +31,7 @@ router.get('/:slug', (req, res) => {
 		// Destructure the movie data from the result
 		const {
 			playerId,
+			genre_ids: genreIds,
 			title: movieTitle,
 			overview: movieOverview,
 			poster_path: posterPath,
@@ -58,6 +59,7 @@ router.get('/:slug', (req, res) => {
 			description: movieOverview,
 			keywords: `Смотреть ${movieTitle} онлайн, ${movieTitle} cмотреть онлайн, ${movieTitle} бесплатно, ${movieTitle} полный фильм, ${movieTitle} в хорошем качестве`,
 			playerId,
+			genreIds: `${genreIds}`,
 			movieTitle,
 			movieOverview,
 			posterPath,
@@ -90,5 +92,6 @@ router.post('/search', async (req, res) => {
 		res.render('index', { title: 'Kinobox Player', error: 'Error fetching data from API' })
 	}
 })
+
 
 module.exports = router

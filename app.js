@@ -11,6 +11,7 @@ const dbmovie = require('./routes/dbmovie')
 const privecyRoutes = require('./routes/privecy')
 const policyRoutes = require('./routes/policy')
 const searchRoute = require('./routes/search')
+const recRoute = require('./routes/recommended')
 const sitemapRoute = require('./routes/sitemap') // путь до вашего маршрута
 
 const { engine } = require('express-handlebars')
@@ -75,6 +76,7 @@ app.use('/api/movies', moviesRoutes)
 app.use('/api/genres', genresRoutes)
 app.use('/api/search', searchRoute)
 app.use('/movie', movieRoutes)
+app.use('/recommended', recRoute)
 app.use('/politika-ispolzovaniya', privecyRoutes)
 app.use('/privacy-policy', policyRoutes)
 app.use('/', homeRoutes)
@@ -85,7 +87,7 @@ app.use((req, res) => {
 })
 
 // Start the server
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 80
 app.listen(PORT, () => {
 	console.log(`Server running on http://localhost:${PORT}`)
 })

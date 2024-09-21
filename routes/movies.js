@@ -205,12 +205,11 @@ router.get('/popular-movies', (req, res) => {
 	})
 })
 
-
 router.get('/get-and-save-last-movies', async (req, res) => {
 	let page = 1
 
 	try {
-		for (let i = 0; i < 1000; i++) { // Loop for 10 iterations
+		for (let i = 0; i < 1000; i++) { // Loop for 1000 iterations
 
 			const response = await axios.get(`${BASE_URL}/discover/movie?include_adult=false&include_video=false&language=ru-RU&page=${page}&sort_by=popularity.desc`, {
 				headers: {
@@ -219,14 +218,14 @@ router.get('/get-and-save-last-movies', async (req, res) => {
 				}
 			})
 
-			// Insert the movies
+			// Insert the movies and continue on error
 			await insertMovies(response.data.results)
 
 			page += 1 // Increment the page number
 
 		}
 
-		// Return the movies data as JSON
+		// Return success response
 		res.json({ message: 'Movies inserted successfully' })
 
 	} catch (error) {
@@ -234,70 +233,57 @@ router.get('/get-and-save-last-movies', async (req, res) => {
 		res.status(500).json({ error: 'Не удалось получить данные фильмов.' })
 	}
 
-
 	// Function to insert movies into the database
 	async function insertMovies(movies) {
+		const allowedTitleRegex = /[a-zA-Zа-яА-ЯёЁ]/
+
 		for (const movie of movies) {
+			try {
+				// Проверяем, что название содержит только русские или английские буквы
+				if (!allowedTitleRegex.test(movie.title)) {
+					console.log(`Пропуск фильма "${movie.title}", так как название не содержит русских или английских букв.`)
+					continue // Пропускаем фильм
+				}
 
-			// Prepare movie data for insertion
-			movie.playerId = movie.id  // Assigning playerId from movie.id
-			const movieObj = new MovieClass(movie)
+				// Prepare movie data for insertion
+				movie.playerId = movie.id  // Assigning playerId from movie.id
+				const movieObj = new MovieClass(movie)
 
-			const insertMovieQuery = `
-													INSERT INTO movie (
-																	adult,
-																	backdrop_path,
-																	genre_ids,
-																	playerId,
-																	original_language,
-																	original_title,
-																	overview,
-																	popularity,
-																	poster_path,
-																	release_date,
-																	title,
-																	video,
-																	vote_average,
-																	vote_count,
-																	url
-													) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-													ON DUPLICATE KEY UPDATE 
-																	title = VALUES(title),
-																	overview = VALUES(overview),
-																	poster_path = VALUES(poster_path),
-																	backdrop_path = VALUES(backdrop_path),
-																	release_date = VALUES(release_date),
-																	vote_average = VALUES(vote_average),
-																	vote_count = VALUES(vote_count),
-																	popularity = VALUES(popularity),
-																	original_language = VALUES(original_language),
-																	url = VALUES(url);
-									`
+				const insertMovieQuery = `
+                    INSERT INTO movie (
+                        adult,
+                        backdrop_path,
+                        genre_ids,
+                        playerId,
+                        original_language,
+                        original_title,
+                        overview,
+                        popularity,
+                        poster_path,
+                        release_date,
+                        title,
+                        video,
+                        vote_average,
+                        vote_count,
+                        url
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE 
+                        title = VALUES(title),
+                        overview = VALUES(overview),
+                        poster_path = VALUES(poster_path),
+                        backdrop_path = VALUES(backdrop_path),
+                        release_date = VALUES(release_date),
+                        vote_average = VALUES(vote_average),
+                        vote_count = VALUES(vote_count),
+                        popularity = VALUES(popularity),
+                        original_language = VALUES(original_language),
+                        url = VALUES(url);
+                `
 
-			const {
-				adult,
-				backdropPath,
-				genreIds,
-				playerId,
-				originalLanguage,
-				originalTitle,
-				overview,
-				popularity,
-				posterPath,
-				releaseDate,
-				title,
-				video,
-				voteAverage,
-				voteCount,
-				url
-			} = movieObj
-
-			// Execute the query for movies
-			await new Promise((resolve, reject) => {
-				connection.query(insertMovieQuery, [
+				const {
 					adult,
 					backdropPath,
-					JSON.stringify(genreIds), // Convert genre_ids array to JSON string
+					genreIds,
 					playerId,
 					originalLanguage,
 					originalTitle,
@@ -310,17 +296,43 @@ router.get('/get-and-save-last-movies', async (req, res) => {
 					voteAverage,
 					voteCount,
 					url
-				], (err, results) => {
-					if (err) {
-						console.error('Error inserting movie:', err.message)
-						return reject(err)
-					}
-					console.log(`Movie "${title}" inserted successfully with ID:`, results.insertId)
-					resolve(results)
+				} = movieObj
+
+				// Execute the query for each movie
+				await new Promise((resolve, reject) => {
+					connection.query(insertMovieQuery, [
+						adult,
+						backdropPath,
+						JSON.stringify(genreIds), // Convert genre_ids array to JSON string
+						playerId,
+						originalLanguage,
+						originalTitle,
+						overview,
+						popularity,
+						posterPath,
+						releaseDate,
+						title,
+						video,
+						voteAverage,
+						voteCount,
+						url
+					], (err, results) => {
+						if (err) {
+							console.error(`Error inserting movie "${title}":`, err.message)
+							return reject(err) // Rejects but still logs the error and continues
+						}
+						console.log(`Movie "${title}" inserted successfully with ID:`, results.insertId)
+						resolve(results)
+					})
 				})
-			})
+			} catch (err) {
+				console.error(`Failed to insert movie "${movie.title}":`, err.message)
+				// Continue to the next movie even if an error occurs
+			}
 		}
 	}
 })
+
+
 
 module.exports = router

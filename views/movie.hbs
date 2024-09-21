@@ -57,12 +57,18 @@
 					</div>
          
 					<div class="movie-tabs">
-                        <div class="row">
-						            	<div class="col-md-12 col-sm-12 col-xs-12">
-						            		<p>{{movieOverview}}</p>
-						             
-											 
-								         <div class="kinobox_player"></div>
+                  <div class="row">
+						            		<div class="col-md-12 col-sm-12 col-xs-12">
+						            				<p>{{movieOverview}}</p>
+						            
+								         					<div class="kinobox_player"></div>
+		
+																							<div class='recomended-wrap'>
+																								<h2 class='bd-hd'>Похожие фильмы</h2>
+																										<div class="recomended-movies" id="recommended-movies-js">
+																										</div>
+																										
+																								</div>
 						            	</div>
 						            	{{!-- <div class="col-md-4 col-xs-12 col-sm-12">
 						            		<div class="sb-it">
@@ -144,4 +150,49 @@
         }
 
         searchMovie()
+
+
+
+
+			async function fetchMoviesByGenres(genres) {
+    try {
+      // Replace with your actual endpoint
+      const response = await fetch(`/recommended/random-movies-by-genres?genres=${genres.join(',')}`);
+
+      // Parse the JSON response
+      const data = await response.json();
+
+      // Get the movies container
+      const moviesContainer = document.getElementById('recommended-movies-js');
+
+      // Clear the container before adding new content
+      moviesContainer.innerHTML = '';
+
+      // Loop through each movie and create the HTML structure
+      data.movies.forEach(movie => {
+        const movieItem = `
+          <div class="movie-item-style-2 movie-item-style-1">
+            <a href="/movie/${movie.url}">
+              <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.posterPath}" alt="${movie.title}" class="lazyload">
+              <div class="mv-item-infor">
+                <h6>${movie.title}</h6>
+                <p class="rate"><i class="ion-android-star"></i><span>${movie.voteAverage}</span> /10</p>
+              </div>
+            </a>
+          </div>
+        `;
+        // Append the movie item to the container
+        moviesContainer.innerHTML += movieItem;
+      });
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+    }
+  }
+
+try{
+  fetchMoviesByGenres({{genreIds}});
+} catch(e){
+	console.log('error load recommended', e)
+}
+
     </script>
