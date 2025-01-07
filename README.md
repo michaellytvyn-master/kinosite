@@ -45,8 +45,10 @@ Before running the project, ensure the following are installed on your system:
    ```bash
    npm start
    ```
-			or in dev mode 
-         
+
+   npm run dev
+   
+
 	```bash
    npm run dev
    ```
