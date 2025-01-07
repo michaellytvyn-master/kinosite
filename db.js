@@ -1,12 +1,13 @@
+require('dotenv').config()
 const mysql = require('mysql2')
 
 // Create a connection to the database
 const connection = mysql.createConnection({
-	host: '95.164.2.112',
-	user: 'myappuser',
-	password: '00001111',
-	database: 'myappdb', // Replace with your MySQL database name
-	charset: 'utf8mb4'
+	host: process.env.DB_HOST,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
+	charset: process.env.DB_CHARSET,
 })
 
 // const dropTableQuery = 'DROP TABLE IF EXISTS movie'
@@ -18,6 +19,17 @@ const connection = mysql.createConnection({
 // 		console.log('Table dropped successfully')
 // 	}
 // })
+
+const deleteMovieQuery = "DELETE FROM movie WHERE url = 'maxxxine1023922'"
+
+connection.query(deleteMovieQuery, (err, results) => {
+	if (err) {
+		console.error('Error deleting movie:', err.message)
+	} else {
+		console.log('Movie deleted successfully')
+	}
+})
+
 
 function createTables() {
 	const createMovieTableQuery = `

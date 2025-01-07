@@ -206,7 +206,7 @@ router.get('/popular-movies', (req, res) => {
 })
 
 router.get('/get-and-save-last-movies', async (req, res) => {
-	let page = 1
+	let page = 470
 
 	try {
 		for (let i = 0; i < 1000; i++) { // Loop for 1000 iterations
