@@ -1,113 +1,130 @@
-const express = require('express')
-const axios = require('axios')
-const router = express.Router()
-const MovieClass = require('../model/movieSchema')
-const PopularClass = require('../model/popularSchema')
-const connection = require('../db')
+const express = require("express");
+const axios = require("axios");
+const router = express.Router();
+const MovieClass = require("../model/movieSchema");
+const PopularClass = require("../model/popularSchema");
+const connection = require("../db");
 // Ваш API ключ от TMDB
-const API_KEY = 'de94532d35add78bb95c7004ef2a92a4'
+const API_KEY = "de94532d35add78bb95c7004ef2a92a4";
 
 // Базовый URL TMDB API
-const BASE_URL = 'https://api.themoviedb.org/3'
+const BASE_URL = "https://api.themoviedb.org/3";
 
 // Маршрут для получения последних популярных фильмов
-router.get('/popular', async (req, res) => {
-	try {
-		const response = await axios.get(`${BASE_URL}/movie/popular`, {
-			params: {
-				api_key: API_KEY,
-				language: 'ru-RU', // Устанавливаем язык ответа (например, русский)
-				page: 1 // Номер страницы (пагинация)
-			}
-		})
+router.get("/popular", async (req, res) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/movie/popular`, {
+      params: {
+        api_key: API_KEY,
+        language: "ru-RU", // Устанавливаем язык ответа (например, русский)
+        page: 1, // Номер страницы (пагинация)
+      },
+    });
 
-		// Возвращаем данные популярных фильмов в формате JSON
-		res.json(response.data.results)
-	} catch (error) {
-		console.error('Ошибка при получении популярных фильмов:', error.message)
-		res.status(500).json({ error: 'Не удалось получить данные популярных фильмов.' })
-	}
-})
+    // Возвращаем данные популярных фильмов в формате JSON
+    res.json(response.data.results);
+  } catch (error) {
+    console.error("Ошибка при получении популярных фильмов:", error.message);
+    res
+      .status(500)
+      .json({ error: "Не удалось получить данные популярных фильмов." });
+  }
+});
 
 // Route to find movie or TV show by external ID
-router.get('/find/:id', async (req, res) => {
-	const externalId = req.params.id
+router.get("/find/:id", async (req, res) => {
+  const externalId = req.params.id;
 
-	if (!externalId) {
-		return res.status(400).json({ error: 'Please provide both external_id and external_source query parameters.' })
-	}
+  if (!externalId) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "Please provide both external_id and external_source query parameters.",
+      });
+  }
 
-	try {
-		const response = await axios.get(`${BASE_URL}/movie/${externalId}?language=ru-RU`, {
-			headers: {
-				accept: 'application/json',
-				Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZTk0NTMyZDM1YWRkNzhiYjk1YzcwMDRlZjJhOTJhNCIsIm5iZiI6MTcyNDcwODc4MS45Mjk2MTUsInN1YiI6IjY2Y2NiMzViOWMxZmZlODRmYWIzNTJlZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S3wwhMdJRCHK6lE37gXE16RlAEnB4vDSIYdKPoYwTLM'
-			}
-		})
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/movie/${externalId}?language=ru-RU`,
+      {
+        headers: {
+          accept: "application/json",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZTk0NTMyZDM1YWRkNzhiYjk1YzcwMDRlZjJhOTJhNCIsIm5iZiI6MTcyNDcwODc4MS45Mjk2MTUsInN1YiI6IjY2Y2NiMzViOWMxZmZlODRmYWIzNTJlZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S3wwhMdJRCHK6lE37gXE16RlAEnB4vDSIYdKPoYwTLM",
+        },
+      },
+    );
 
-		// Return the results in JSON format
-		res.json(response.data)
-	} catch (error) {
-		console.error('Ошибка при получении данных:', error.message)
-		// res.status(500).json({ error: 'Не удалось получить данные.' })
-	}
-})
+    // Return the results in JSON format
+    res.json(response.data);
+  } catch (error) {
+    console.error("Ошибка при получении данных:", error.message);
+    // res.status(500).json({ error: 'Не удалось получить данные.' })
+  }
+});
 
 /// Route to save popular movies
-router.get('/save-popular', async (req, res) => {
-	try {
-		const response = await axios.get(`${BASE_URL}/movie/popular`, {
-			params: {
-				api_key: API_KEY,
-				language: 'ru-RU',
-				page: 1
-			}
-		})
+router.get("/save-popular", async (req, res) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/movie/popular`, {
+      params: {
+        api_key: API_KEY,
+        language: "ru-RU",
+        page: 1,
+      },
+    });
 
-		// Insert the popular movies
-		await insertMovies(response.data.results)
+    // Insert the popular movies
+    await insertMovies(response.data.results);
 
-		// Return the popular movies data as JSON
-		res.json({ message: 'Popular movies inserted successfully' })
-	} catch (error) {
-		console.error('Ошибка при получении популярных фильмов:', error.message)
-		res.status(500).json({ error: 'Не удалось получить данные популярных фильмов.' })
-	}
+    // Return the popular movies data as JSON
+    res.json({ message: "Popular movies inserted successfully" });
+  } catch (error) {
+    console.error("Ошибка при получении популярных фильмов:", error.message);
+    res
+      .status(500)
+      .json({ error: "Не удалось получить данные популярных фильмов." });
+  }
 
-	// Function to insert movies into the database
-	async function insertMovies(movies) {
-		for (const movie of movies) {
-			const popularObj = new PopularClass(movie.id, movie.title)
+  // Function to insert movies into the database
+  async function insertMovies(movies) {
+    for (const movie of movies) {
+      const popularObj = new PopularClass(movie.id, movie.title);
 
-			const insertPopularQuery = `
+      const insertPopularQuery = `
 													INSERT INTO popular (
 																	popularId,
 																	name
 													) VALUES (?, ?)
 													ON DUPLICATE KEY UPDATE 
 																	name = VALUES(name);
-									`
+									`;
 
-			// Execute the query for popular movies
-			await new Promise((resolve, reject) => {
-				connection.query(insertPopularQuery, [
-					popularObj.popularId,
-					popularObj.name
-				], (err, results) => {
-					if (err) {
-						console.error('Error inserting popular movie:', err.message)
-						return reject(err)
-					}
-					console.log(`Popular movie "${popularObj.name}" inserted successfully with ID:`, results.insertId)
-					resolve(results)
-				})
-			})
+      // Execute the query for popular movies
+      await new Promise((resolve, reject) => {
+        connection.query(
+          insertPopularQuery,
+          [popularObj.popularId, popularObj.name],
+          (err, results) => {
+            if (err) {
+              console.error("Error inserting popular movie:", err.message);
+              return reject(err);
+            }
+            console.log(
+              `Popular movie "${popularObj.name}" inserted successfully with ID:`,
+              results.insertId,
+            );
+            resolve(results);
+          },
+        );
+      });
 
-			// Prepare movie data for insertion
-			movie.playerId = movie.id  // Assigning playerId from movie.id
-			const movieObj = new MovieClass(movie)
+      // Prepare movie data for insertion
+      movie.playerId = movie.id; // Assigning playerId from movie.id
+      const movieObj = new MovieClass(movie);
 
-			const insertMovieQuery = `
+      const insertMovieQuery = `
 													INSERT INTO movie (
 																	adult,
 																	backdrop_path,
@@ -136,120 +153,132 @@ router.get('/save-popular', async (req, res) => {
 																	popularity = VALUES(popularity),
 																	original_language = VALUES(original_language),
 																	url = VALUES(url);
-									`
+									`;
 
-			const {
-				adult,
-				backdropPath,
-				genreIds,
-				playerId,
-				originalLanguage,
-				originalTitle,
-				overview,
-				popularity,
-				posterPath,
-				releaseDate,
-				title,
-				video,
-				voteAverage,
-				voteCount,
-				url
-			} = movieObj
+      const {
+        adult,
+        backdropPath,
+        genreIds,
+        playerId,
+        originalLanguage,
+        originalTitle,
+        overview,
+        popularity,
+        posterPath,
+        releaseDate,
+        title,
+        video,
+        voteAverage,
+        voteCount,
+        url,
+      } = movieObj;
 
-			// Execute the query for movies
-			await new Promise((resolve, reject) => {
-				connection.query(insertMovieQuery, [
-					adult,
-					backdropPath,
-					JSON.stringify(genreIds), // Convert genre_ids array to JSON string
-					playerId,
-					originalLanguage,
-					originalTitle,
-					overview,
-					popularity,
-					posterPath,
-					releaseDate,
-					title,
-					video,
-					voteAverage,
-					voteCount,
-					url
-				], (err, results) => {
-					if (err) {
-						console.error('Error inserting movie:', err.message)
-						return reject(err)
-					}
-					console.log(`Movie "${title}" inserted successfully with ID:`, results.insertId)
-					resolve(results)
-				})
-			})
-		}
-	}
-})
+      // Execute the query for movies
+      await new Promise((resolve, reject) => {
+        connection.query(
+          insertMovieQuery,
+          [
+            adult,
+            backdropPath,
+            JSON.stringify(genreIds), // Convert genre_ids array to JSON string
+            playerId,
+            originalLanguage,
+            originalTitle,
+            overview,
+            popularity,
+            posterPath,
+            releaseDate,
+            title,
+            video,
+            voteAverage,
+            voteCount,
+            url,
+          ],
+          (err, results) => {
+            if (err) {
+              console.error("Error inserting movie:", err.message);
+              return reject(err);
+            }
+            console.log(
+              `Movie "${title}" inserted successfully with ID:`,
+              results.insertId,
+            );
+            resolve(results);
+          },
+        );
+      });
+    }
+  }
+});
 
 // Route to get movies where playerId matches popularId DB
-router.get('/popular-movies', (req, res) => {
-	const query = `
+router.get("/popular-movies", (req, res) => {
+  const query = `
 					SELECT movie.*
 					FROM movie
 					JOIN popular ON movie.playerId = popular.popularId;
-	`
+	`;
 
-	connection.query(query, (err, results) => {
-		if (err) {
-			console.error('Error fetching popular movies:', err.message)
-			return res.status(500).json({ error: 'Failed to fetch popular movies' })
-		}
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error fetching popular movies:", err.message);
+      return res.status(500).json({ error: "Failed to fetch popular movies" });
+    }
 
-		res.json(results)
-	})
-})
+    res.json(results);
+  });
+});
 
-router.get('/get-and-save-last-movies', async (req, res) => {
-	let page = 470
+router.get("/get-and-save-last-movies", async (req, res) => {
+  let page = 470;
 
-	try {
-		for (let i = 0; i < 1000; i++) { // Loop for 1000 iterations
+  try {
+    for (let i = 0; i < 1000; i++) {
+      // Loop for 1000 iterations
 
-			const response = await axios.get(`${BASE_URL}/discover/movie?include_adult=false&include_video=false&language=ru-RU&page=${page}&sort_by=popularity.desc`, {
-				headers: {
-					accept: 'application/json',
-					Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZTk0NTMyZDM1YWRkNzhiYjk1YzcwMDRlZjJhOTJhNCIsIm5iZiI6MTcyNDcwODc4MS45Mjk2MTUsInN1YiI6IjY2Y2NiMzViOWMxZmZlODRmYWIzNTJlZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S3wwhMdJRCHK6lE37gXE16RlAEnB4vDSIYdKPoYwTLM'
-				}
-			})
+      const response = await axios.get(
+        `${BASE_URL}/discover/movie?include_adult=false&include_video=false&language=ru-RU&page=${page}&sort_by=popularity.desc`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkZTk0NTMyZDM1YWRkNzhiYjk1YzcwMDRlZjJhOTJhNCIsIm5iZiI6MTcyNDcwODc4MS45Mjk2MTUsInN1YiI6IjY2Y2NiMzViOWMxZmZlODRmYWIzNTJlZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.S3wwhMdJRCHK6lE37gXE16RlAEnB4vDSIYdKPoYwTLM",
+          },
+        },
+      );
 
-			// Insert the movies and continue on error
-			await insertMovies(response.data.results)
+      // Insert the movies and continue on error
+      await insertMovies(response.data.results);
 
-			page += 1 // Increment the page number
+      page += 1; // Increment the page number
+    }
 
-		}
+    // Return success response
+    res.json({ message: "Movies inserted successfully" });
+  } catch (error) {
+    console.error("Ошибка при получении фильмов:", error.message);
+    res.status(500).json({ error: "Не удалось получить данные фильмов." });
+  }
 
-		// Return success response
-		res.json({ message: 'Movies inserted successfully' })
+  // Function to insert movies into the database
+  async function insertMovies(movies) {
+    const allowedTitleRegex = /[a-zA-Zа-яА-ЯёЁ]/;
 
-	} catch (error) {
-		console.error('Ошибка при получении фильмов:', error.message)
-		res.status(500).json({ error: 'Не удалось получить данные фильмов.' })
-	}
+    for (const movie of movies) {
+      try {
+        // Проверяем, что название содержит только русские или английские буквы
+        if (!allowedTitleRegex.test(movie.title)) {
+          console.log(
+            `Пропуск фильма "${movie.title}", так как название не содержит русских или английских букв.`,
+          );
+          continue; // Пропускаем фильм
+        }
 
-	// Function to insert movies into the database
-	async function insertMovies(movies) {
-		const allowedTitleRegex = /[a-zA-Zа-яА-ЯёЁ]/
+        // Prepare movie data for insertion
+        movie.playerId = movie.id; // Assigning playerId from movie.id
+        const movieObj = new MovieClass(movie);
 
-		for (const movie of movies) {
-			try {
-				// Проверяем, что название содержит только русские или английские буквы
-				if (!allowedTitleRegex.test(movie.title)) {
-					console.log(`Пропуск фильма "${movie.title}", так как название не содержит русских или английских букв.`)
-					continue // Пропускаем фильм
-				}
-
-				// Prepare movie data for insertion
-				movie.playerId = movie.id  // Assigning playerId from movie.id
-				const movieObj = new MovieClass(movie)
-
-				const insertMovieQuery = `
+        const insertMovieQuery = `
                     INSERT INTO movie (
                         adult,
                         backdrop_path,
@@ -278,61 +307,66 @@ router.get('/get-and-save-last-movies', async (req, res) => {
                         popularity = VALUES(popularity),
                         original_language = VALUES(original_language),
                         url = VALUES(url);
-                `
+                `;
 
-				const {
-					adult,
-					backdropPath,
-					genreIds,
-					playerId,
-					originalLanguage,
-					originalTitle,
-					overview,
-					popularity,
-					posterPath,
-					releaseDate,
-					title,
-					video,
-					voteAverage,
-					voteCount,
-					url
-				} = movieObj
+        const {
+          adult,
+          backdropPath,
+          genreIds,
+          playerId,
+          originalLanguage,
+          originalTitle,
+          overview,
+          popularity,
+          posterPath,
+          releaseDate,
+          title,
+          video,
+          voteAverage,
+          voteCount,
+          url,
+        } = movieObj;
 
-				// Execute the query for each movie
-				await new Promise((resolve, reject) => {
-					connection.query(insertMovieQuery, [
-						adult,
-						backdropPath,
-						JSON.stringify(genreIds), // Convert genre_ids array to JSON string
-						playerId,
-						originalLanguage,
-						originalTitle,
-						overview,
-						popularity,
-						posterPath,
-						releaseDate,
-						title,
-						video,
-						voteAverage,
-						voteCount,
-						url
-					], (err, results) => {
-						if (err) {
-							console.error(`Error inserting movie "${title}":`, err.message)
-							return reject(err) // Rejects but still logs the error and continues
-						}
-						console.log(`Movie "${title}" inserted successfully with ID:`, results.insertId)
-						resolve(results)
-					})
-				})
-			} catch (err) {
-				console.error(`Failed to insert movie "${movie.title}":`, err.message)
-				// Continue to the next movie even if an error occurs
-			}
-		}
-	}
-})
+        // Execute the query for each movie
+        await new Promise((resolve, reject) => {
+          connection.query(
+            insertMovieQuery,
+            [
+              adult,
+              backdropPath,
+              JSON.stringify(genreIds), // Convert genre_ids array to JSON string
+              playerId,
+              originalLanguage,
+              originalTitle,
+              overview,
+              popularity,
+              posterPath,
+              releaseDate,
+              title,
+              video,
+              voteAverage,
+              voteCount,
+              url,
+            ],
+            (err, results) => {
+              if (err) {
+                console.error(`Error inserting movie "${title}":`, err.message);
+                return reject(err); // Rejects but still logs the error and continues
+              }
+              console.log(
+                `Movie "${title}" inserted successfully with ID:`,
+                results.insertId,
+              );
+              resolve(results);
+            },
+          );
+        });
+      } catch (err) {
+        console.error(`Failed to insert movie "${movie.title}":`, err.message);
+        // Continue to the next movie even if an error occurs
+      }
+    }
+  }
+});
 
-
-
-module.exports = router
+module.exports = router;
