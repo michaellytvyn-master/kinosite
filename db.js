@@ -1,14 +1,15 @@
-require("dotenv").config();
-const mysql = require("mysql2");
+require("dotenv").config()
+const mysql = require("mysql2")
 
 // Create a connection to the database
 const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
+  host: process.env.DB_HOST.split(":")[0], // Extract the host without the port
+  port: process.env.DB_HOST.split(":")[1] || 3306, // Default to 3306 if no port provided
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   charset: process.env.DB_CHARSET,
-});
+})
 
 // const dropTableQuery = 'DROP TABLE IF EXISTS movie'
 
@@ -20,15 +21,15 @@ const connection = mysql.createConnection({
 // 	}
 // })
 
-const deleteMovieQuery = "DELETE FROM movie WHERE url = 'maxxxine1023922'";
+const deleteMovieQuery = "DELETE FROM movie WHERE url = 'maxxxine1023922'"
 
 connection.query(deleteMovieQuery, (err, results) => {
   if (err) {
-    console.error("Error deleting movie:", err.message);
+    console.error("Error deleting movie:", err.message)
   } else {
-    console.log("Movie deleted successfully");
+    console.log("Movie deleted successfully")
   }
-});
+})
 
 function createTables() {
   const createMovieTableQuery = `
@@ -50,7 +51,7 @@ function createTables() {
         vote_count INT,
         url VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
     );
-`;
+`
 
   const createGenreTableQuery = `
         CREATE TABLE IF NOT EXISTS genre (
@@ -58,7 +59,7 @@ function createTables() {
             name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
 												genreId VARCHAR(255) NOT NULL UNIQUE
         );
-    `;
+    `
 
   const createPopularTableQuery = `
 				CREATE TABLE IF NOT EXISTS popular (
@@ -66,43 +67,43 @@ function createTables() {
 								name VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
 								popularId VARCHAR(255) NOT NULL UNIQUE
 				);
-`;
+`
 
   connection.query(createMovieTableQuery, (err, results) => {
     if (err) {
-      console.error("Error creating movie table:", err.message);
+      console.error("Error creating movie table:", err.message)
     } else {
-      console.log("Movie table created successfully");
+      console.log("Movie table created successfully")
     }
-  });
+  })
 
   connection.query(createGenreTableQuery, (err, results) => {
     if (err) {
-      console.error("Error creating movie table:", err.message);
+      console.error("Error creating movie table:", err.message)
     } else {
-      console.log("Movie table created successfully");
+      console.log("Movie table created successfully")
     }
-  });
+  })
 
   connection.query(createPopularTableQuery, (err, results) => {
     if (err) {
-      console.error("Error creating popular movie table:", err.message);
+      console.error("Error creating popular movie table:", err.message)
     } else {
-      console.log("popular table created successfully");
+      console.log("popular table created successfully")
     }
-  });
+  })
 }
 
 // Connect to the database
 connection.connect((err) => {
   if (err) {
-    console.error("Error connecting to the database:", err.stack);
-    return;
+    console.error("Error connecting to the database:", err.stack)
+    return
   }
-  console.log("Connected to the database as id " + connection.threadId);
+  console.log("Connected to the database as id " + connection.threadId)
 
-  createTables();
-});
+  createTables()
+})
 
 // Export the connection for use in other modules
-module.exports = connection;
+module.exports = connection
